@@ -13,8 +13,16 @@ class TodoListViewController: UITableViewController  {
     
     var itemArray = ["Mike","Kiddo","Run for your life"]
     
+    let defaults = UserDefaults.standard
+    
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        if let items  = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
+        print(defaults)
         // Do any additional setup after loading the view.
     }
     
@@ -52,11 +60,12 @@ class TodoListViewController: UITableViewController  {
     @IBAction func addItem(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
-        let alert = UIAlertController.init(title: "Add N ew Todoey Item", message: "", preferredStyle: .alert)
+        let alert = UIAlertController.init(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction.init(title: "Item", style: .default) { (action) in
            // print("Succes!")
             self.itemArray.append(textField.text! ?? "New Item" )
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             self.tableView.reloadData()
         }
         alert.addAction(action)
